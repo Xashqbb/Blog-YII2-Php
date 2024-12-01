@@ -5,49 +5,56 @@
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
-
-    <div class="jumbotron text-center bg-transparent mt-5 mb-5">
-        <h1 class="display-4">Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="https://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
-    <div class="body-content">
-
+    <div class="container mt-5">
         <div class="row">
-            <div class="col-lg-4 mb-3">
-                <h2>Heading</h2>
+            <div class="col-md-8">
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <article class="post">
 
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+                    <div class="post-thumb">
+                        <a href="#"><img class="img-index" src="https://via.placeholder.com/800x400" alt="Image"></a>
+                    </div>
+
+                    <div class="post-content">
+
+                        <header class="entry-header text-center text-uppercase">
+                            <h6><a href="#">Travel</a></h6>
+                            <h1 class="entry-title"><a href="#">Home is a peaceful place</a></h1>
+                        </header>
+
+                        <div class="entry-content">
+                            <p>
+                                This is an example post. Customize it according to your needs. Add engaging content and make it unique.
+                            </p>
+                            <div class="btn-continue-reading text-center text-uppercase">
+                                <a href="#" class="more-link">Continue Reading</a>
+                            </div>
+                        </div>
+
+                        <div class="social-share">
+                            <span class="social-share-title pull-left text-capitalize">By Admin On 01-12-2024</span>
+                            <ul class="text-center pull-right">
+                                <li><a class="s-facebook" href="#"><i class="fa fa-eye"></i></a></li>
+                                <li>10</li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                </article>
+
+                <ul class="pagination">
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                </ul>
+
             </div>
-            <div class="col-lg-4 mb-3">
-                <h2>Heading</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
+            <!-- Підключення сайдбара -->
+            <?php
+            echo \Yii::$app->view->renderFile('@app/views/site/right.php');
+            ?>
         </div>
-
     </div>
 </div>

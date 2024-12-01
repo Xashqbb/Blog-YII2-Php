@@ -12,6 +12,7 @@ use yii\grid\GridView;
 
 $this->title = 'Post Tags';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="post-tags-index">
 

@@ -1,60 +1,44 @@
 <?php
-
-/** @var yii\web\View $this */
-
-$this->title = 'My Yii Application';
+use yii\helpers\Url;
+use yii\widgets\LinkPager;
 ?>
-<div class="site-index">
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-8">
 
-                <article class="post">
+<div class="row">
+    <div class="col-md-8">
+        <div class="content-area">
+            <?php foreach ($posts as $post): ?>
+                <div class="post">
+                    <h2>
+                        <a href="<?= Url::to(['site/view', 'id' => $post->id]) ?>">
+                            <?= \yii\helpers\Html::encode($post->title) ?>
+                        </a>
+                    </h2>
 
-                    <div class="post-thumb">
-                        <a href="#"><img class="img-index" src="https://via.placeholder.com/800x400" alt="Image"></a>
-                    </div>
+                    <?php if ($post->image): ?>
+                        <img src="<?= Yii::getAlias('@web' . $post->image) ?>"
+                             alt="<?= \yii\helpers\Html::encode($post->title) ?>" class="img-fluid">
+                    <?php endif; ?>
 
-                    <div class="post-content">
+                    <p><?= \yii\helpers\StringHelper::truncate($post->content, 150) ?></p>
+                    <p><a href="<?= Url::to(['site/view', 'id' => $post->id]) ?>">Read more...</a></p>
+                </div>
+            <?php endforeach; ?>
 
-                        <header class="entry-header text-center text-uppercase">
-                            <h6><a href="#">Travel</a></h6>
-                            <h1 class="entry-title"><a href="#">Home is a peaceful place</a></h1>
-                        </header>
+            <!-- Pagination -->
+            <?= LinkPager::widget([
+                'pagination' => $pagination,
+            ]); ?>
+        </div>
+    </div>
 
-                        <div class="entry-content">
-                            <p>
-                                This is an example post. Customize it according to your needs. Add engaging content and make it unique.
-                            </p>
-                            <div class="btn-continue-reading text-center text-uppercase">
-                                <a href="#" class="more-link">Continue Reading</a>
-                            </div>
-                        </div>
-
-                        <div class="social-share">
-                            <span class="social-share-title pull-left text-capitalize">By Admin On 01-12-2024</span>
-                            <ul class="text-center pull-right">
-                                <li><a class="s-facebook" href="#"><i class="fa fa-eye"></i></a></li>
-                                <li>10</li>
-                            </ul>
-                        </div>
-
-                    </div>
-
-                </article>
-
-                <ul class="pagination">
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                </ul>
-
-            </div>
-
-            <!-- Підключення сайдбара -->
-            <?php
-            echo \Yii::$app->view->renderFile('@app/views/site/right.php');
-            ?>
+    <!-- Sidebar -->
+    <div class="col-md-4">
+        <div class="primary-sidebar">
+            <aside class="widget">
+                <h3 class="widget-title text-uppercase text-center">Popular Posts</h3>
+                <!-- Замінили $popular на $popularPosts -->
+                <?= $this->render('right', ['popularPosts' => $popularPosts]); ?>
+            </aside>
         </div>
     </div>
 </div>

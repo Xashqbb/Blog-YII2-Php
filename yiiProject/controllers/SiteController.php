@@ -2,19 +2,18 @@
 
 namespace app\controllers;
 
+use app\models\Categories;
+use app\models\Posts;
+use app\models\Comments;  // Додано модель для коментарів
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
+use yii\data\Pagination;
 
 class SiteController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
     public function behaviors()
     {
         return [
@@ -38,9 +37,6 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function actions()
     {
         return [
@@ -54,80 +50,132 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
+    // Дія для відображення списку постів
     public function actionIndex()
     {
-        return $this->render('index');
-    }
+        // Створюємо запит для отримання всіх постів з пагінацією
+        $query = Posts::find();
 
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
+        // Пагінація
+        $pagination = new Pagination([
+            'defaultPageSize' => 5,
+            'totalCount' => $query->count(),
+        ]);
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
+        // Отримуємо пости з пагінацією
+        $posts = $query->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
 
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
+        // Отримуємо популярні пости за кількістю коментарів
+        $popularPosts = Posts::find()
+            ->joinWith('comments')  // Приєднуємо таблицю коментарів
+            ->groupBy('posts.id')   // Групуємо за постами
+            ->orderBy(['COUNT(comments.id)' => SORT_DESC])  // Сортуємо за кількістю коментарів
+            ->limit(5)
+            ->all();
+
+        // Повертаємо вигляд з даними
+        return $this->render('index', [
+            'posts' => $posts,
+            'pagination' => $pagination,
+            'popularPosts' => $popularPosts,
         ]);
     }
 
-    /**
-     * Logout action.
-     *
-     * @return Response
-     */
-    public function actionLogout()
+
+
+    // Дія для перегляду конкретного поста
+    // Дія для перегляду конкретного поста
+    // SiteController.php
+
+    public function actionView($id)
     {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
-
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
+        $post = Posts::findOne($id);
+        if ($post === null) {
+            throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
         }
-        return $this->render('contact', [
-            'model' => $model,
+        $category = Categories::findOne($post->category_id);
+        $query = Posts::find();
+        $comments = Comments::find()->where(['post_id' => $id])->all();
+        $commentsPagination = new \yii\data\Pagination(['totalCount' => count($comments), 'pageSize' => 10]);
+        $pagination = new \yii\data\Pagination([
+            'totalCount' => $query->count(),
+            'pageSize' => 5,
+        ]);
+
+        $posts = $query->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        $popular = \app\models\Posts::find()
+            ->orderBy(['created_at' => SORT_DESC])
+            ->limit(5)
+            ->all();
+
+        $recent = \app\models\Posts::find()
+            ->orderBy(['updated_at' => SORT_DESC])
+            ->limit(5)
+            ->all();
+
+        return $this->render('single', [
+            'post' => $post,
+            'category' => $category,
+            'posts' => $posts,
+            'comments' => $comments,
+            'pagination' => $commentsPagination,
+            'popular' => $popular,
+            'recent' => $recent,
         ]);
     }
 
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
+    
+
+
+    public function actionTopic($id)
     {
-        return $this->render('about');
+        $category = Categories::findOne($id);
+
+        if (!$category) {
+            throw new \yii\web\NotFoundHttpException('Category not found');
+        }
+
+        // Retrieve posts belonging to this category
+        $query = Posts::find()->where(['category_id' => $id]);
+
+        $pagination = new Pagination([
+            'totalCount' => $query->count(),
+            'pageSize' => 5,
+        ]);
+
+        $posts = $query->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        $popular = \app\models\Posts::find()
+            ->orderBy(['created_at' => SORT_DESC])
+            ->limit(5)
+            ->all();
+
+        // Fetch recent topics/posts
+        $recent = \app\models\Posts::find()
+            ->orderBy(['updated_at' => SORT_DESC])
+            ->limit(5)
+            ->all();
+
+        // Fetch all categories
+        $topics = \app\models\Categories::find()->all();
+
+        // Ensure $posts is passed to the view
+        return $this->render('topic', [
+            'posts' => $posts,
+            'category' => $category,
+            'pagination' => $pagination,
+            'popular' => $popular,
+            'recent' => $recent,
+            'topics' => $topics
+        ]);
     }
-    public function actionView()
-    {
-        return $this->render('single');
-    }
+
 
 }

@@ -1,65 +1,53 @@
 <?php
 
+use yii\helpers\Html;
 use yii\helpers\Url;
 
+$this->title = $post->title;
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
-<div class="col-md-8">
 
-    <article class="post">
+<div class="site-single">
+    <h1><?= Html::encode($this->title) ?></h1>
 
-        <div class="post-thumb">
-            <a href="blog.html"><img src="https://via.placeholder.com/800x400" alt="image"></a>
+    <!-- Display post image -->
+    <?php if ($post->image): ?>
+        <div class="post-image">
+            <img src="<?= $post->getImage() ?>" alt="<?= Html::encode($post->title) ?>" />
+        </div>
+    <?php endif; ?>
+
+    <p><?= Html::encode($post->content) ?></p>
+
+    <div class="comments-section">
+        <h3>Comments</h3>
+
+        <?php foreach ($comments as $comment): ?>
+            <div class="comment">
+                <p><strong><?= Html::encode($comment->author) ?>:</strong> <?= Html::encode($comment->content) ?></p>
+            </div>
+        <?php endforeach; ?>
+
+        <!-- Pagination for comments -->
+        <div class="pagination">
+            <?= \yii\widgets\LinkPager::widget([
+                'pagination' => $pagination,
+            ]) ?>
         </div>
 
-        <div class="post-content">
-
-            <header class="entry-header text-center text-uppercase">
-                <h6>
-                    <a href=""> Travel </a>
-                </h6>
-                <h1 class="entry-title"><a href="blog.html">Home is a peaceful place</a></h1>
-            </header>
-
-            <div class="entry-content">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Phasellus ultrices dolor at enim scelerisque, id ullamcorper arcu vehicula.</p>
-            </div>
-
-            <div class="decoration">
-                <a href="" class="btn btn-default">Tag</a>
-            </div>
-
-            <div class="social-share">
-                <span class="social-share-title pull-left text-capitalize">By Stas On 20-02-12</span>
-                <ul class="text-center pull-right">
-                    <li>
-                        <a class="s-facebook" href="https://www.facebook.com/sharer/sharer.php?u=<?= Url::base('http'); ?>">
-                            <i class="fa fa-facebook"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="s-twitter" href="https://twitter.com/intent/tweet?url=<?= Url::base('http'); ?>">
-                            <i class="fa fa-twitter"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="s-google-plus" href="https://plus.google.com/share?url=<?= Url::base('http'); ?>">
-                            <i class="fa fa-google-plus"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="s-linkedin" href="http://www.linkedin.com/shareArticle?mini=true&url=<?= Url::base('http'); ?>">
-                            <i class="fa fa-linkedin"></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
+        <!-- Comment form -->
+        <div class="leave-comment">
+            <h4>Leave a Reply</h4>
+            <form method="post" action="<?= Url::to(['site/comment', 'postId' => $post->id]) ?>">
+                <div class="form-group">
+                    <input type="text" name="author" class="form-control" placeholder="Your name" required>
+                </div>
+                <div class="form-group">
+                    <textarea name="content" class="form-control" rows="5" placeholder="Your comment" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Post Comment</button>
+            </form>
         </div>
-
-    </article>
-
+    </div>
 </div>
-
-<?php
-echo \Yii::$app->view->renderFile('@app/views/site/right.php');
-?>

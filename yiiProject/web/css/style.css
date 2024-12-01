@@ -1,279 +1,157 @@
-/* style.css */
+/* Основні стилі для блогу */
 
-/* Загальні налаштування */
 body {
     font-family: Arial, sans-serif;
-    line-height: 1.6;
+    background-color: #f4f4f4;
     color: #333;
-    background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
+    line-height: 1.6;
 }
 
-a {
+.site-index {
+    padding: 20px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #333;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.col-md-8 {
+    flex: 2;
+}
+
+.col-md-4 {
+    flex: 1;
+}
+
+.posts-list {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.post-item {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.post-item h2 {
+    font-size: 1.8rem;
+    color: #333;
+}
+
+.post-item .post-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.post-category, .post-tags, .post-content, .post-date {
+    margin-top: 15px;
+}
+
+.post-category a, .post-tags a {
     color: #007bff;
     text-decoration: none;
 }
 
-a:hover {
-    text-decoration: underline;
-}
-
-/* Навігаційна панель */
-#header .navbar {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#header .navbar-brand {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #fff !important;
-}
-
-#header .nav-link {
-    color: #ddd !important;
-}
-
-#header .nav-link:hover {
-    color: #fff !important;
-}
-
-.navbar-dark .navbar-nav .active > .nav-link {
-    color: #fff;
-    font-weight: bold;
-}
-
-/* Основний контент */
-.main-content {
-    padding: 20px;
-    background: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-.main-content .row {
-    margin: 0;
-}
-
-/* Кнопка "Continue Reading" */
-.btn-continue-reading a {
-    display: inline-block;
-    padding: 10px 20px;
-    background: #007bff;
-    color: #fff;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: bold;
-    transition: background 0.3s ease;
-}
-
-.btn-continue-reading a:hover {
-    background: #0056b3;
-}
-
-/* Футер */
-.footer {
-    background: #e9ecef;
-    padding: 15px 0;
-    text-align: center;
-    border-top: 1px solid #ddd;
-}
-
-.footer p {
-    margin: 0;
-    font-size: 14px;
-    color: #6c757d;
-}
-
-/* Стилі для статей (з прикладу в index.php) */
-.post {
-    margin-bottom: 20px;
-}
-
-.post-thumb img {
-    max-width: 100%;
-    border-radius: 8px;
-}
-
-.entry-header h6 a {
-    font-size: 14px;
-    text-transform: uppercase;
-    color: #007bff;
-    font-weight: bold;
-}
-
-.entry-header h1 {
-    font-size: 24px;
-    margin: 10px 0;
-    color: #333;
-}
-
-.entry-content p {
-    font-size: 16px;
-    margin-bottom: 15px;
-}
-
-/* Пагінація */
-.pagination {
-    display: flex;
-    justify-content: center;
-    list-style: none;
-    padding: 0;
-}
-
-.pagination li {
-    margin: 0 5px;
-}
-
-.pagination a {
-    display: inline-block;
-    padding: 8px 12px;
-    background: #007bff;
-    color: #fff;
-    border-radius: 4px;
-    transition: background 0.3s ease;
-}
-
-.pagination a:hover {
-    background: #0056b3;
-}
-
-.pagination .active a {
-    background: #0056b3;
-    pointer-events: none;
-    cursor: default;
-}
-/* sidebar */
-.widget {
-    padding: 37px 30px;
-    margin-bottom: 35px;
+.primary-sidebar {
     background-color: #fff;
-    border: 1px solid #eee;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.widget {
+    margin-bottom: 20px;
 }
 
 .widget-title {
-    font-size: 18px;
-    margin: 0 0 25px;
-    letter-spacing: 0.5px;
-    color: #333333;
-    text-align: center;
+    font-size: 1.2rem;
     text-transform: uppercase;
-}
-
-.widget .popular-post:first-of-type {
-    padding-top: 0;
+    color: #333;
 }
 
 .popular-post {
-    border-bottom: 1px solid #eee;
-    padding: 25px 0 20px;
+    margin-bottom: 15px;
 }
 
-.popular-img {
-    position: relative;
-    width: 100%;
-    margin-bottom: 15px;
+.popular-post h5 a {
+    color: #007bff;
+    text-decoration: none;
 }
 
 .popular-img img {
     width: 100%;
-    display: block;
-}
-
-img {
-    max-width: 100%;
     height: auto;
+    border-radius: 5px;
 }
 
 .p-overlay {
     position: absolute;
     top: 0;
     left: 0;
-    bottom: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    transition: all 0.44s;
-}
-
-.popular-img:hover .p-overlay {
-    opacity: 1;
-}
-
-.p-content a {
-    font-size: 12px;
-    color: #333333;
-    text-decoration: none;
-    display: block;
-    font-weight: 600;
-    transition: all 0.44s;
-}
-
-.p-content a:hover {
-    color: #007bff;
-}
-
-.p-content span {
-    color: #666666;
-    font-size: 12px;
-    font-style: italic;
-}
-/**/
-.post-thumb img {
     width: 100%;
-    display: block;
-    margin-bottom: 20px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
 }
 
-.entry-header h6 a {
-    font-size: 14px;
-    color: #777;
-    text-decoration: none;
+.pagination {
+    text-align: center;
+    margin-top: 20px;
 }
 
-.entry-header h1 a {
-    font-size: 24px;
-    color: #333;
-    text-decoration: none;
-}
-
-.entry-header h1 a:hover {
+.pagination a {
     color: #007bff;
+    text-decoration: none;
+    padding: 8px 15px;
+    margin: 0 5px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
 }
 
-.entry-content p {
-    font-size: 16px;
-    line-height: 1.8;
-    color: #555;
+.pagination a:hover {
+    background-color: #007bff;
+    color: #fff;
 }
 
-.decoration .btn {
-    margin-top: 15px;
-    background-color: #f7f7f7;
-    color: #333;
-    text-transform: uppercase;
-    padding: 10px 15px;
+.widget form input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
     border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
-.social-share ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.widget form button {
+    width: 100%;
+    padding: 8px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
 }
 
-.social-share ul li {
-    display: inline-block;
-    margin-right: 10px;
+.widget form button:hover {
+    background-color: #0056b3;
 }
 
-.social-share ul li a {
-    color: #777;
-    font-size: 18px;
-    transition: color 0.3s;
+.post-image img {
+    width: 30%;
+    height: 30%;
 }
-
-.social-share ul li a:hover {
-    color: #007bff;
+.img-fluid {
+    max-width: 50%;
+    height: 50%;
 }

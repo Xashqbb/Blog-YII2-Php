@@ -46,16 +46,21 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'topic/<id:\d+>' => 'site/topic', // Matches pretty URL
+                '<controller>/<action>' => '<controller>/<action>', // Fallback for query parameters
                 'view' => 'site/view',
+
             ],
         ],
     ],
+
     'params' => $params,
     'modules' => [
         'admin' => [
             'class' => 'app\modules\admin\Module',
         ]
     ]
+
 ];
 
 if (YII_ENV_DEV) {

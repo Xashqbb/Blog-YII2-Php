@@ -101,4 +101,12 @@ class Comments extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Users::class, ['id' => 'user_id']);
     }
+    public function saveComment($postId, $author, $content)
+    {
+        $this->post_id = $postId;
+        $this->author = $author;
+        $this->content = $content;
+
+        return $this->save();
+    }
 }

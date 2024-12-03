@@ -1,7 +1,6 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
-
 ?>
 
 <div class="post-item">
@@ -21,7 +20,7 @@ use yii\helpers\Url;
     <!-- Виведення категорії -->
     <div class="post-category">
         <strong>Категорія:</strong>
-        <?php if ($post->category): ?>
+        <?php if (isset($post->category)): ?>
             <a href="<?= Url::to(['category/view', 'id' => $post->category->id]) ?>">
                 <?= Html::encode($post->category->name) ?>
             </a>
@@ -33,12 +32,16 @@ use yii\helpers\Url;
     <!-- Виведення тегів -->
     <div class="post-tags">
         <strong>Теги:</strong>
-        <?php if ($post->tags): ?>
-            <?php foreach ($post->tags as $tag): ?>
-                <a href="<?= Url::to(['tag/view', 'id' => $tag->id]) ?>" class="tag">
-                    <?= Html::encode($tag->name) ?>
-                </a>
-            <?php endforeach; ?>
+        <?php if (!empty($post->tags)): ?>
+            <ul class="tag-list">
+                <?php foreach ($post->tags as $tag): ?>
+                    <li>
+                        <a href="<?= Url::to(['tag/view', 'id' => $tag->id]) ?>" class="tag">
+                            <?= Html::encode($tag->name) ?>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
         <?php else: ?>
             <span>Без тегів</span>
         <?php endif; ?>

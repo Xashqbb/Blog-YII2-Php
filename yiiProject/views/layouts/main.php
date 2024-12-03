@@ -22,6 +22,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <html lang="<?= Yii::$app->language ?>" class="h-100">
 <head>
     <title><?= Html::encode($this->title) ?></title>
+    <?= Html::csrfMetaTags() ?>
     <?php $this->head() ?>
 </head>
 <body class="d-flex flex-column h-100">
@@ -34,24 +35,41 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'brandUrl' => Yii::$app->homeUrl,
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
     ]);
+
+    // Навігаційні пункти для гостей та авторизованих користувачів
+    $menuItems = [
+        ['label' => 'Home', 'url' => ['/site/index']],
+    ];
+
+    if (Yii::$app->user->isGuest) {
+        // Кнопки для гостей (Логін)
+        $menuItems[] = ['label' => 'Login', 'url' => ['/auth/login']];
+    } else {
+        // Кнопки для авторизованих користувачів
+
+        $menuItems[] = ['label' => 'Profile', 'url' => ['/site/profile']];
+        $menuItems[] = ['label' => 'Create Post', 'url' => ['/site/create-post']];
+        $menuItems[] = [
+            'label' => 'Edit Post',
+            'url' => ['/site/editPost'],
+            'visible' => Yii::$app->controller->action->id == 'editPost', // Видимість кнопки на сторінці редагування поста
+        ];
+        $menuItems[] = '<li class="nav-item">'
+            . Html::beginForm(['/site/logout'])
+            . Html::submitButton(
+                'Logout (' . Yii::$app->user->identity->name . ')',
+                ['class' => 'nav-link btn btn-link logout']
+            )
+            . Html::endForm()
+            . '</li>';
+    }
+
+    // Відображення навігаційних елементів
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest
-                ? ['label' => 'Login', 'url' => ['/site/login']]
-                : '<li class="nav-item">'
-                . Html::beginForm(['/site/logout'])
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->name . ')',
-                    ['class' => 'nav-link btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-        ]
+        'items' => $menuItems,
     ]);
+
     NavBar::end();
     ?>
 </header>

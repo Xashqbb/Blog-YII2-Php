@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 ?>
 
 <aside class="primary-sidebar">
@@ -21,22 +22,38 @@ use yii\helpers\Url;
         <?php endif; ?>
     </div>
 
-    <!-- Інші віджети -->
+    <!-- Віджет пошуку постів -->
     <div class="widget">
-        <h3 class="widget-title">Пошук</h3>
-        <form action="#" method="get">
-            <input type="text" name="search" placeholder="Шукати...">
-            <button type="submit">Пошук</button>
-        </form>
+        <h3 class="widget-title">Пошук постів</h3>
+        <?php $form = ActiveForm::begin([
+            'action' => ['site/search'],
+            'method' => 'get',
+        ]); ?>
+
+        <?= $form->field($searchModel, 'title')->textInput(['placeholder' => 'Enter post title']) ?>
+
+        <div class="form-group">
+            <?= \yii\helpers\Html::submitButton('Шукати', ['class' => 'btn btn-primary']) ?>
+        </div>
+
+        <?php ActiveForm::end(); ?>
     </div>
+
 
     <div class="widget">
         <h3 class="widget-title">Категорії</h3>
         <ul>
-            <li><a href="#">Категорія 1</a></li>
-            <li><a href="#">Категорія 2</a></li>
-            <li><a href="#">Категорія 3</a></li>
-            <li><a href="#">Категорія 4</a></li>
+            <?php
+            $categories = \app\models\Categories::find()->all();
+            if (!empty($categories)):
+                foreach ($categories as $category): ?>
+                    <li><a href="<?= Url::to(['site/topic', 'id' => $category->id]) ?>">
+                        <?= Html::encode($category->name) ?>
+                        </a></li>
+                <?php endforeach;
+            else: ?>
+                <li>Категорії не знайдено</li>
+            <?php endif; ?>
         </ul>
     </div>
 </aside>

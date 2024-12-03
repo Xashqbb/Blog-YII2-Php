@@ -15,6 +15,7 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'eHnaqhywfCzhZrKYT7Ly_CNk700DfsNq',
+            'enableCsrfValidation' => true,
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -22,6 +23,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+            'loginUrl' => ['auth/login'],
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -46,14 +48,18 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'login' => 'auth/login',
+                'signup' => 'auth/signup',
                 'topic/<id:\d+>' => 'site/topic', // Matches pretty URL
-                '<controller>/<action>' => '<controller>/<action>', // Fallback for query parameters
+                '<controller>/<action>' => '<controller>/<action>',
                 'view' => 'site/view',
+                'comment' => 'site/comment',
+                'logout' => 'auth/logout',
+                'create-post' => 'site/create-post',
 
             ],
         ],
     ],
-
     'params' => $params,
     'modules' => [
         'admin' => [

@@ -27,10 +27,10 @@ use app\models\User; // Для користувачів
     ) ?>
 
     <!-- Вибір користувача з випадаючого списку -->
-    <?= $form->field($model, 'user_id')->dropDownList(
-        ArrayHelper::map(\app\models\Users::find()->all(), 'id', 'name'), // Пропонуємо користувачів
-        ['prompt' => 'Select User'] // Підказка в випадаючому списку
-    ) ?>
+<!--    --><?php //= $form->field($model, 'user_id')->dropDownList(
+//        ArrayHelper::map(\app\models\Users::find()->all(), 'id', 'name'), // Пропонуємо користувачів
+//        ['prompt' => 'Select User'] // Підказка в випадаючому списку
+//    ) ?>
 
     <!-- Відображення поточного зображення -->
     <?php if ($model->image): ?>

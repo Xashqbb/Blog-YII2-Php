@@ -15,6 +15,7 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'eHnaqhywfCzhZrKYT7Ly_CNk700DfsNq',
+            'enableCsrfValidation' => true,
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -22,6 +23,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+            'loginUrl' => ['auth/login'],
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -42,14 +44,24 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'admin' => 'admin/default/index',
+                'admin/<controller:\w+>' => 'admin/<controller>/index',
+                'admin/<controller:\w+>/<action:\w+>' => 'admin/<controller>/<action>',
+                'login' => 'auth/login',
+                'signup' => 'auth/signup',
+                'topic/<id:\d+>' => 'site/topic',
+                '<controller>/<action>' => '<controller>/<action>',
+                'view' => 'site/view',
+                'comment' => 'site/comment',
+                'logout' => 'auth/logout',
+                'create-post' => 'site/create-post',
+
             ],
         ],
-        */
     ],
     'params' => $params,
     'modules' => [
@@ -57,6 +69,7 @@ $config = [
             'class' => 'app\modules\admin\Module',
         ]
     ]
+
 ];
 
 if (YII_ENV_DEV) {

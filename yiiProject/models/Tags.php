@@ -56,4 +56,5 @@ class Tags extends \yii\db\ActiveRecord
     {
         return $this->hasMany(PostTags::class, ['tag_id' => 'id']);
     }
+
 }

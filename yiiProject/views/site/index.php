@@ -1,53 +1,47 @@
 <?php
-
-/** @var yii\web\View $this */
-
-$this->title = 'My Yii Application';
+use yii\helpers\Url;
+use yii\widgets\LinkPager;
 ?>
-<div class="site-index">
 
-    <div class="jumbotron text-center bg-transparent mt-5 mb-5">
-        <h1 class="display-4">Congratulations!</h1>
+<div class="row">
+    <div class="col-md-8">
+        <div class="content-area">
+            <?php if (!empty($dataProvider->models)): ?>
+                <?php foreach ($dataProvider->models as $post): ?>
+                    <div class="post">
+                        <h2>
+                            <a href="<?= Url::to(['site/view', 'id' => $post->id]) ?>">
+                                <?= \yii\helpers\Html::encode($post->title) ?>
+                            </a>
+                        </h2>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+                        <?php if ($post->image): ?>
+                            <img src="<?= Yii::getAlias('@web' . $post->image) ?>"
+                                 alt="<?= \yii\helpers\Html::encode($post->title) ?>" class="img-fluid">
+                        <?php endif; ?>
 
-        <p><a class="btn btn-lg btn-success" href="https://www.yiiframework.com">Get started with Yii</a></p>
+                        <p><?= \yii\helpers\StringHelper::truncate($post->content, 150) ?></p>
+                        <p><a href="<?= Url::to(['site/view', 'id' => $post->id]) ?>">Read more...</a></p>
+                    </div>
+                <?php endforeach; ?>
+
+                <!-- Pagination -->
+                <?= LinkPager::widget([
+                    'pagination' => $pagination,
+                ]); ?>
+            <?php else: ?>
+                <p>Немає постів, які відповідають запиту.</p>
+            <?php endif; ?>
+        </div>
     </div>
 
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4 mb-3">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4 mb-3">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
+    <!-- Sidebar -->
+    <div class="col-md-4">
+        <div class="primary-sidebar">
+            <aside class="widget">
+                <h3 class="widget-title text-uppercase text-center">Popular Posts</h3>
+                <?= $this->render('right', ['popularPosts' => $popularPosts, 'searchModel' => $searchModel]); ?>
+            </aside>
         </div>
-
     </div>
 </div>

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "comments".
@@ -12,15 +13,12 @@ use Yii;
  * @property int $user_id
  * @property int|null $parent_id
  * @property string $content
- * @property string|null $created_at
- * @property string|null $updated_at
+ * @property string $created_at
+ * @property string $updated_at
  *
- * @property Comments[] $comments
- * @property Comments $parent
- * @property Posts $post
- * @property Users $user
+ * @property User $user
  */
-class Comments extends \yii\db\ActiveRecord
+class Comments extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -40,9 +38,7 @@ class Comments extends \yii\db\ActiveRecord
             [['post_id', 'user_id', 'parent_id'], 'integer'],
             [['content'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
-            [['post_id'], 'exist', 'skipOnError' => true, 'targetClass' => Posts::class, 'targetAttribute' => ['post_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::class, 'targetAttribute' => ['user_id' => 'id']],
-            [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comments::class, 'targetAttribute' => ['parent_id' => 'id']],
+            [['content'], 'string', 'max' => 1000],
         ];
     }
 
@@ -63,42 +59,35 @@ class Comments extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Comments]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getComments()
-    {
-        return $this->hasMany(Comments::class, ['parent_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Parent]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getParent()
-    {
-        return $this->hasOne(Comments::class, ['id' => 'parent_id']);
-    }
-
-    /**
-     * Gets query for [[Post]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPost()
-    {
-        return $this->hasOne(Posts::class, ['id' => 'post_id']);
-    }
-
-    /**
      * Gets query for [[User]].
      *
      * @return \yii\db\ActiveQuery
      */
     public function getUser()
     {
-        return $this->hasOne(Users::class, ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
+
+    /**
+     * Save the comment and set the author.
+     *
+     * @param bool $runValidation
+     * @param null $attributeNames
+     * @return bool
+     */
+    public function saveComment($runValidation = true, $attributeNames = null)
+    {
+        if ($this->isNewRecord) {
+            // Set default user_id (author) when a new comment is saved
+            $this->user_id = Yii::$app->user->id; // Current logged-in user
+        }
+
+        return parent::save($runValidation, $attributeNames);
+    }
+    // Add a relation for replies
+    public function getReplies()
+    {
+        return $this->hasMany(Comments::class, ['parent_id' => 'id']);
+    }
+
 }
